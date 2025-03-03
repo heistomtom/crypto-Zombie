@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.28; // stating my version
+/**
+ * @title SimpleStorage
+ * @dev A simple contract for storing data.
+ * @notice This contract allows you to store data using a key-value pair approach.
+ * @dev The contract requires a compiler version of 0.8.0 or higher.
+ */
+pragma solidity ^0.8.0; // stating my version
 
 contract SimpleStorage {
    // gives 0 when its undefined

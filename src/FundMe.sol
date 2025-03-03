@@ -5,7 +5,13 @@
 
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.28; // stating my version
+/**
+ * @title SimpleStorage
+ * @dev A simple contract for storing data.
+ * @notice This contract allows you to store data using a key-value pair approach.
+ * @dev The contract requires a compiler version of 0.8.0 or higher.
+ */
+pragma solidity ^0.8.0; // stating my version
 
 import {PriceConverter} from "./PriceConverter.sol";
 
@@ -28,7 +34,7 @@ contract FundMe {
     function fund() public payable{
         
     // How to make the contract require at least 1eth
-    require(msg.value.getConversionRate() minimumUsd, "didn't send enough eth"); // 1e18 means 1ETH means 1000000000000000000 = 1 * 10 ** 18. the ** means raise to power
+    require(msg.value.getConversionRate() == minimumUsd, "didn't send enough eth"); // 1e18 means 1ETH means 1000000000000000000 = 1 * 10 ** 18. the ** means raise to power
     funders.push(msg.sender);
     addressToAmountFunded[msg.sender] = addressToAmountFunded[msg.sender] + msg.value;
     }
@@ -39,7 +45,7 @@ contract FundMe {
         // [1, 2, 3, 4] elements
         // [0, 1, 2, 3] indexes
         // for(/* starting index, ending index, step amount */) 
-        for(uint256 funderIndex = 0; funderIndex < funders.length; funderIndex = funderIndex + 1;){
+        for(uint256 funderIndex = 0; funderIndex < funders.length; funderIndex = funderIndex + 1){
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
@@ -50,15 +56,15 @@ contract FundMe {
 
         // to withraw the funds from this contract
         //transfer
-        payable(msg.sender).transfer(address(this).balance)
+        payable(msg.sender).transfer(address(this).balance);
         //msg.sender id of type address while payable (msg.sender) is of type payable address
 
         // send
-        bool sendSuccess = payable(msg.sender).send(address(this).balance)
-        require(sendSuccess, "send failed");
+        bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        require (sendSuccess, "send failed");
 
         // call
-        (bool callSuccess, bytes memory dataReturned) = payable(msg.sender).call{value address(this).balance}("")
+        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(callSuccess, "call failed");
     }
 
